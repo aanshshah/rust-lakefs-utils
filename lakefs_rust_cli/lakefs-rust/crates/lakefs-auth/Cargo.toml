@@ -1,0 +1,30 @@
+[package]
+name = "lakefs-auth"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+# Shared workspace dependencies
+aws-config.workspace = true
+aws-sdk-sts.workspace = true
+aws-sigv4.workspace = true
+aws-types.workspace = true
+aws-credential-types.workspace = true  # Added from workspace
+reqwest.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+async-trait.workspace = true  # Added from workspace
+
+# Auth-specific dependencies
+url = "2.5"
+base64 = "0.21"
+chrono = "0.4"
+http = "1.0"  # Updated to match aws-sigv4's requirement
+tower = "0.4"
+hyper = "1.0"  # Updated to compatible version
+[dev-dependencies]
+tokio-test = "0.4"
+wiremock = "0.5"
+lakefs-test-utils = { path = "../lakefs-test-utils" }

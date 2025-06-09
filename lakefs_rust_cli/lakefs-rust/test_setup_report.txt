@@ -1,0 +1,38 @@
+Test Setup Report
+Generated: Wed May 14 05:33:12 EDT 2025
+
+OS: macOS
+Directory: /Users/aansh/Desktop/lakefs_rust_cli/lakefs-rust
+
+Summary:
+- Warnings: 11
+- Errors: 0
+
+Warnings:
+test-utils already in workspace
+Dev dependencies section already exists in lakefs-api
+Dev dependencies section already exists in lakefs-auth
+Dev dependencies section already exists in lakefs-local
+Dev dependencies section already exists in lakectl-cli
+Workspace dev dependencies already exist
+Tests already exist in lakefs-api/uri.rs (crates/lakefs-api/src/uri.rs)
+Tests already exist in lakefs-api/models.rs (crates/lakefs-api/src/models.rs)
+Tests already exist in lakefs-auth/basic.rs (crates/lakefs-auth/src/basic.rs)
+Tests already exist in lakefs-local/index.rs (crates/lakefs-local/src/index.rs)
+Tests already exist in lakectl-cli/utils.rs (crates/lakectl-cli/src/utils.rs)
+
+Errors:
+
+
+Files created/modified:
+- crates/lakefs-test-utils/
+- tests/
+- .github/workflows/test.yml
+- run_tests.sh
+- Various source files with test modules
+
+Next steps:
+1. Review this report
+2. Fix any errors
+3. Run: cd lakefs-rust && cargo build --all
+4. Run: ./run_tests.sh

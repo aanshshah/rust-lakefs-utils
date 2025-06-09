@@ -1,0 +1,78 @@
+use crate::{error::Result, basic::BasicAuth, aws_iam::AwsIamAuth};
+use async_trait::async_trait;
+use serde::{Deserialize, Serialize};
+
+#[async_trait]
+pub trait AuthProvider: Send + Sync {
+    async fn get_auth_header(&self) -> Result<String>;
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+#[serde(tag = "type")]
+pub enum AuthConfig {
+    Basic {
+        access_key_id: String,
+        secret_access_key: String,
+    },
+    AwsIam {
+        region: String,
+        #[serde(default)]
+        base_uri: Option<String>,
+    },
+}
+
+pub async fn create_auth_provider(
+    config: AuthConfig, 
+    endpoint: &str,
+) -> Result<Box<dyn AuthProvider>> {
+    match config {
+        AuthConfig::Basic { access_key_id, secret_access_key } => {
+            Ok(Box::new(BasicAuth::new(access_key_id, secret_access_key)))
+        }
+        AuthConfig::AwsIam { region, base_uri } => {
+            let provider = AwsIamAuth::new(region, endpoint, base_uri).await?;
+            Ok(Box::new(provider))
+        }
+    }
+}
+:\"AwsIam\""));
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use super::*;
+
+    #[tokio::test]
+    async fn test_create_basic_auth_provider()  {
+        let config = AuthConfig::Basic {
+            access_key_id: "test-key".to_string(),
+            secret_access_key: "test-secret".to_string(),
+        };
+        
+        let provider = create_auth_provider(config, "http://localhost").await.unwrap();
+        let header = provider.get_auth_header().await.unwrap();
+        
+        assert!(header.starts_with("Basic "));
+    }
+
+    #[tokio::test]
+    async fn test_auth_config_serialization()  {
+        let basic_config = AuthConfig::Basic {
+            access_key_id: "key".to_string(),
+            secret_access_key: "secret".to_string(),
+        };
+        
+        let json = serde_json::to_string(&basic_config).unwrap();
+        assert!(json.contains("\"type\":\"Basic\""));
+        
+        let aws_config = AuthConfig::AwsIam {
+            region: "us-east-1".to_string(),
+            base_uri: Some("http://custom".to_string()),
+        };
+        
+        let json = serde_json::to_string(&aws_config).unwrap();
+        assert!(json.contains("\"type\":\"AwsIam\""));
+    }
+}

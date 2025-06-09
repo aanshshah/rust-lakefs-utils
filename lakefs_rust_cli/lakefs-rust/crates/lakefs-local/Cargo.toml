@@ -1,0 +1,33 @@
+[package]
+name = "lakefs-local"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+# API client
+lakefs-api = { path = "../lakefs-api" }
+
+# Shared workspace dependencies
+tokio.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+anyhow.workspace = true
+indicatif.workspace = true
+bytes.workspace = true
+
+# Local sync dependencies
+notify = "6.1"
+walkdir = "2.4"
+sha2 = "0.10"
+chrono = "0.4"
+futures = "0.3"
+async-trait = "0.1"
+ignore = "0.4"
+relative-path = "1.9"
+path-slash = "0.2"
+
+[dev-dependencies]
+tempfile = "3.8"
+mockall = "0.12"
+lakefs-test-utils = { path = "../lakefs-test-utils" }
